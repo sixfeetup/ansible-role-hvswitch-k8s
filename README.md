@@ -28,7 +28,7 @@ vswitches:
     gateway: 327.0.0.1  # If the vSwitch has a subnet, this variable should contain the subnet's gateway IP address
     addresses:          # IP addresses for the vSwitch network interface (per host)
       - "{{ hostvars[inventory_hostname]['ip'] }}/24"
-    subnets:            # Subnets available on the vSwitch (need to be registered with Hetzner robot) for non-private networks
+    subnets_to_route:            # Subnets available on the vSwitch (need to be registered with Hetzner robot) for non-private networks
     - subnet: 327.0.0.0/24
 ```
 

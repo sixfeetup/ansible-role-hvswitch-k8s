@@ -10,28 +10,9 @@ network:
       addresses: {{ vswitch.addresses }}
 {% if vswitch.gateway is defined %}
       routes:
-        - to: 0.0.0.0/0
-          via: {{ vswitch.gateway }}
-          table: {{ vswitch.routing_table }}
-          on-link: true
-{% endif %}
-{% if vswitch.subnets is defined %}
-      routing-policy:
-{% for subnet in vswitch.subnets %}
-        - from: {{ subnet.subnet }}
-          to: {{ kube_service_addresses }}
-          table: 254
-          priority: 0
-        - from: {{ subnet.subnet }}
-          to: {{ kube_pods_subnet }}
-          table: 254
-          priority: 0
-        - from: {{ subnet.subnet }}
-          table: {{ vswitch.routing_table }}
-          priority: 10
+{% for subnet in (vswitch.subnets_to_route | default([])) %}
         - to: {{ subnet.subnet }}
-          table: {{ vswitch.routing_table }}
-          priority: 10
+          via: {{ vswitch.gateway }}
 {% endfor %}
 {% endif %}
 {% endfor %}
